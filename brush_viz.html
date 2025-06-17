@@ -1,47 +1,60 @@
 <!DOCTYPE html>
-<html lang="es">
+<html>
 <head>
-  <meta charset="UTF-8">
+  <meta charset="utf-8">
   <title>Brush con Escala de Color</title>
   <script src="https://d3js.org/d3.v5.min.js"></script>
 </head>
 <body>
-  <svg id="brush1" width="300" height="300" style="background:lightgrey"></svg>
-  <svg id="brush2" width="300" height="300" style="background:lightgrey"></svg>
+  <div>
+    <svg id="brush1" width="400" height="300" style="background:lightgrey"></svg>
+    <svg id="brush2" width="400" height="300" style="background:lightgrey"></svg>
+  </div>
 
   <script>
-    d3.csv("dense.csv").then(function(data) {
-      var svg1 = d3.select("#brush1"), svg2 = d3.select("#brush2");
+    const data = [{"A":94,"B":137,"C":153},{"A":80,"B":181,"C":195},... (truncated for brevity) ...];
 
-      var sc1 = d3.scaleLinear().domain([0, 10, 50]).range(["lime", "yellow", "red"]);
-      var sc2 = d3.scaleLinear().domain([0, 10, 50]).range(["lime", "yellow", "blue"]);
+    const width = 400, height = 300;
 
-      var cs1 = drawCircles(svg1, data, d => +d.A, d => +d.B, sc1);
-      var cs2 = drawCircles(svg2, data, d => +d.A, d => +d.B, sc2);
+    const xExtent = d3.extent(data, d => +d.A);
+    const yExtent = d3.extent(data, d => +d.B);
+
+    const xScale = d3.scaleLinear().domain(xExtent).range([10, width - 10]);
+    const yScale = d3.scaleLinear().domain(yExtent).range([10, height - 10]);
+
+    function makeBrush() {
+      const svg1 = d3.select("#brush1");
+      const svg2 = d3.select("#brush2");
+
+      const sc1 = d3.scaleLinear().domain([0, 10, 50]).range(["lime", "yellow", "red"]);
+      const sc2 = d3.scaleLinear().domain([0, 10, 50]).range(["lime", "yellow", "blue"]);
+
+      const cs1 = drawCircles(svg1, data, d => xScale(+d.A), d => yScale(+d.B), sc1);
+      const cs2 = drawCircles(svg2, data, d => xScale(+d.A), d => yScale(+d.B), sc2);
 
       svg1.call(installHandlers, data, cs1, cs2, sc1, sc2);
-    });
+    }
 
     function drawCircles(svg, data, accX, accY, sc) {
-      var color = sc(Infinity);
+      const color = sc(Infinity);
       return svg.selectAll("circle")
         .data(data)
         .enter()
         .append("circle")
-        .attr("r", 5)
+        .attr("r", 4)
         .attr("cx", accX)
         .attr("cy", accY)
         .attr("fill", color)
-        .attr("fill-opacity", 0.4);
+        .attr("fill-opacity", 0.5);
     }
 
     function installHandlers(svg, data, cs1, cs2, sc1, sc2) {
       svg.attr("cursor", "crosshair")
         .on("mousemove", function(event) {
-          var pt = d3.pointer(event);
+          const pt = d3.pointer(event);
           cs1.attr("fill", function(d, i) {
-            var r = Math.hypot(pt[0] - +d3.select(this).attr("cx"),
-                               pt[1] - +d3.select(this).attr("cy"));
+            const r = Math.hypot(pt[0] - +d3.select(this).attr("cx"),
+                                 pt[1] - +d3.select(this).attr("cy"));
             data[i]["r"] = r;
             return sc1(r);
           });
@@ -52,6 +65,8 @@
           cs2.attr("fill", sc2(Infinity));
         });
     }
+
+    makeBrush();
   </script>
 </body>
 </html>
