@@ -1,213 +1,104 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Dashboard D3.js</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mis Visualizaciones D3.js</title>
   <script src="https://d3js.org/d3.v5.min.js"></script>
   <style>
-    /* ... estilos originales ... */
-    body {{ background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); }}
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      min-height: 100vh;
+      padding: 20px;
+    }
+    .dashboard {
+      max-width: 1400px;
+      margin: 0 auto;
+      background: rgba(255, 255, 255, 0.95);
+      border-radius: 20px;
+      padding: 30px;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+      backdrop-filter: blur(10px);
+    }
+    .header {
+      text-align: center;
+      margin-bottom: 40px;
+      color: #2c3e50;
+    }
+    .header h1 {
+      font-size: 2.5em;
+      font-weight: 300;
+      margin-bottom: 10px;
+      background: linear-gradient(45deg, #667eea, #764ba2);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .charts-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 30px;
+    }
+    .chart-container {
+      background: white;
+      border-radius: 15px;
+      padding: 25px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+      transition: transform 0.3s ease;
+    }
+    .chart-container:hover {
+      transform: translateY(-2px);
+    }
+    .chart-title {
+      font-size: 1.3em;
+      font-weight: 600;
+      color: #2c3e50;
+      margin-bottom: 20px;
+      text-align: center;
+    }
+    iframe {
+      width: 100%;
+      height: 340px;
+      border: none;
+      border-radius: 10px;
+      background: #eee;
+    }
   </style>
 </head>
 <body>
   <div class="dashboard">
     <div class="header">
-      <h1>📊 Dashboard Interactivo</h1>
-      <p>Visualización de datos con D3.js</p>
+      <h1>🧪 Mis Visualizaciones D3.js</h1>
+      <p>Compilación de gráficos animados interactivos generados en Colab</p>
     </div>
-
-    <div class="stats-grid" id="stats"></div>
-
     <div class="charts-grid">
-      <!-- Gráficos existentes -->
       <div class="chart-container">
-        <div class="chart-title">📈 Ventas por Mes</div>
-        <div id="barChart"></div>
+        <div class="chart-title">🖱️ Coordenadas del Mouse</div>
+        <iframe srcdoc='<!DOCTYPE html><svg id="coords" width="300" height="300" style="background:lightgrey; border: 1px solid #ccc;"></svg><script src="https://d3js.org/d3.v5.min.js"></script><script>var txt = d3.select("#coords").append("text").attr("font-family","Arial").attr("font-size","12px").attr("fill","black");d3.select("#coords").on("mousemove",function(){var pt = d3.mouse(this);txt.attr("x",18+pt[0]).attr("y",6+pt[1]).text("("+Math.round(pt[0])+", "+Math.round(pt[1])+")");}).on("mouseleave",function(){txt.text("");});</script>'></iframe>
       </div>
       <div class="chart-container">
-        <div class="chart-title">🥧 Distribución por Categoría</div>
-        <div id="pieChart"></div>
+        <div class="chart-title">🎯 Brush con Escala de Color</div>
+        <iframe src="brush_viz.html"></iframe>
       </div>
-      <div class="chart-container full-width">
-        <div class="chart-title">📊 Tendencia de Usuarios</div>
-        <div id="lineChart"></div>
-      </div>
-
-      <!-- Gráficas de Colab insertadas aquí -->
-      <div class="chart-container full-width">
-        <div class="chart-title">🎯 Coordenadas del Mouse</div>
-        <svg id="coords" width="300" height="300" style="background:lightgrey; border: 1px solid #ccc;"></svg>
-      </div>
-
-      <div class="chart-container full-width">
-        <div class="chart-title">🌀 Doble Brush con Circulitos</div>
-        <svg id="brush1" width="300" height="300" style="background:lightgrey"></svg>
-        <svg id="brush2" width="300" height="300" style="background:lightgrey"></svg>
-      </div>
-
-      <div class="chart-container full-width">
-        <div class="chart-title">🧲 Drag & Drop de Círculos</div>
-        <svg id="dragdrop" width="600" height="200" style="background:lightgrey; border: 1px solid #ccc;">
-          <circle cx="100" cy="100" r="20" fill="red"></circle>
-          <circle cx="300" cy="100" r="20" fill="green"></circle>
-          <circle cx="500" cy="100" r="20" fill="blue"></circle>
-        </svg>
-      </div>
-
-      <div class="chart-container full-width">
-        <div class="chart-title">🚦 Gráfica Stagger por Clic</div>
-        <svg id="stagger" width="600" height="300" style="background:lightgrey"></svg>
-      </div>
-
       <div class="chart-container">
-        <div class="chart-title">🎼 Lissajous en Tiempo Real</div>
-        <svg id="lissajous" width="300" height="300" style="background:lightgrey"></svg>
+        <div class="chart-title">🔴 Drag & Drop de Círculos</div>
+        <iframe srcdoc='<svg id="dragdrop" width="600" height="200" style="background:lightgrey; border: 1px solid #ccc;"><circle cx="100" cy="100" r="20" fill="red"/><circle cx="300" cy="100" r="20" fill="green"/><circle cx="500" cy="100" r="20" fill="blue"/></svg><script src="https://d3js.org/d3.v5.min.js"></script><script>var drag = d3.drag().on("start",function(){this._c=d3.select(this).attr("fill");d3.select(this).attr("fill","lime");}).on("drag",function(){var pt=d3.mouse(this.ownerSVGElement);d3.select(this).attr("cx",pt[0]).attr("cy",pt[1]);}).on("end",function(){d3.select(this).attr("fill",this._c);});d3.selectAll("#dragdrop circle").call(drag);</script>'></iframe>
+      </div>
+      <div class="chart-container">
+        <div class="chart-title">📊 Gráfico Stagger (Clic)</div>
+        <iframe srcdoc='<!DOCTYPE html><svg id="stagger" width="600" height="300" style="background:lightgrey"></svg><script src="https://d3js.org/d3.v5.min.js"></script><script>function makeStagger(){var ds1=[2,1,3,5,7,8,9,9,9,8,7,5,3,1,2],ds2=[8,9,8,7,5,3,2,1,2,3,5,7,8,9,8];var scX=d3.scaleLinear().domain([0,ds1.length]).range([50,540]),scY=d3.scaleLinear().domain([0,9]).range([250,50]);var svg=d3.select("#stagger");svg.selectAll("line").data(ds1).enter().append("line").attr("stroke","red").attr("stroke-width",20).attr("x1",(d,i)=>scX(i)).attr("y1",scY(0)).attr("x2",(d,i)=>scX(i)).attr("y2",d=>scY(d));svg.on("click",()=>{[ds1,ds2]=[ds2,ds1];svg.selectAll("line").data(ds1).transition().duration(1000).delay((d,i)=>200*i).attr("y2",d=>scY(d));});}makeStagger();</script>'></iframe>
+      </div>
+      <div class="chart-container">
+        <div class="chart-title">🌌 Lissajous en Tiempo Real</div>
+        <iframe srcdoc='<!DOCTYPE html><svg id="lissajous" width="300" height="300" style="background:lightgrey"></svg><script src="https://d3js.org/d3.v5.min.js"></script><script>var a=1.9,b=3.2,omega=2*Math.PI/10000,crrX=250,crrY=150,prvX=crrX,prvY=crrY;var svg=d3.select("#lissajous");d3.timer(function(t){var phi=omega*t;crrX=150+100*Math.cos(a*phi);crrY=150+100*Math.sin(b*phi);svg.selectAll("line").each(function(){this.bogus_opacity*=.99;}).attr("stroke-opacity",function(){return this.bogus_opacity;}).filter(function(){return this.bogus_opacity<0.05;}).remove();svg.append("line").each(function(){this.bogus_opacity=1.0;}).attr("x1",prvX).attr("y1",prvY).attr("x2",crrX).attr("y2",crrY).attr("stroke","green").attr("stroke-width",2);prvX=crrX;prvY=crrY;if(t>120000)return true;});</script>'></iframe>
       </div>
     </div>
   </div>
-
-  <div class="tooltip" id="tooltip"></div>
-
-  <script>
-    // Aquí van las funciones initDashboard, createBarChart, etc.
-    // Y se agregan las de las nuevas gráficas:
-
-    function coordsPixels(selector) {{
-      var txt = d3.select(selector).append('text')
-        .attr('font-family', 'Arial, sans-serif')
-        .attr('font-size', '12px')
-        .attr('fill', 'black');
-
-      var svg = d3.select(selector)
-        .attr('cursor', 'crosshair')
-        .on('mousemove', function() {{
-          var pt = d3.mouse(svg.node());
-          txt.attr('x', 18 + pt[0]).attr('y', 6 + pt[1])
-            .text('(' + Math.round(pt[0]) + ', ' + Math.round(pt[1]) + ')');
-        }})
-        .on('mouseleave', function() {{ txt.text(''); }});
-    }}
-
-    function makeBrush() {{
-      const data = Array.from({{ length: 100 }}, () => {{
-        return {{ A: Math.random() * 100, B: Math.random() * 100 }};
-      }});
-      const sc1 = d3.scaleLinear().domain([0, 10, 50]).range(["lime", "yellow", "red"]);
-      const sc2 = d3.scaleLinear().domain([0, 10, 50]).range(["lime", "yellow", "blue"]);
-      const svg1 = d3.select("#brush1"), svg2 = d3.select("#brush2");
-
-      const cs1 = drawCircles(svg1, data, d => d.A * 3, d => d.B * 3, sc1);
-      const cs2 = drawCircles(svg2, data, d => d.A * 3, d => d.B * 3, sc2);
-
-      installHandlers(svg1, data, cs1, cs2, sc1, sc2);
-    }}
-
-    function drawCircles(svg, data, accX, accY, sc) {{
-      var color = sc(Infinity);
-      return svg.selectAll("circle")
-        .data(data)
-        .enter()
-        .append("circle")
-        .attr("r", 5)
-        .attr("cx", accX)
-        .attr("cy", accY)
-        .attr("fill", color)
-        .attr("fill-opacity", 0.4);
-    }}
-
-    function installHandlers(svg, data, cs1, cs2, sc1, sc2) {{
-      svg.attr("cursor", "crosshair")
-        .on("mousemove", function(event) {{
-          const pt = d3.pointer(event);
-          cs1.attr("fill", function(d, i) {{
-            const r = Math.hypot(pt[0] - +d3.select(this).attr("cx"), pt[1] - +d3.select(this).attr("cy"));
-            data[i].r = r;
-            return sc1(r);
-          }});
-          cs2.attr("fill", (d, i) => sc2(data[i].r));
-        }})
-        .on("mouseleave", function() {{
-          cs1.attr("fill", sc1(Infinity));
-          cs2.attr("fill", sc2(Infinity));
-        }});
-    }}
-
-    function makeDragDrop() {{
-      var widget = undefined, color = undefined;
-      var drag = d3.drag()
-        .on("start", function() {{
-          color = d3.select(this).attr("fill");
-          widget = d3.select(this).attr("fill", "lime");
-        }})
-        .on("drag", function() {{
-          var pt = d3.mouse(d3.select("#dragdrop").node());
-          widget.attr("cx", pt[0]).attr("cy", pt[1]);
-        }})
-        .on("end", function() {{
-          widget.attr("fill", color);
-          widget = undefined;
-        }});
-      drag(d3.select("#dragdrop").selectAll("circle"));
-    }}
-
-    function makeStagger() {{
-      var ds1 = [2,1,3,5,7,8,9,9,9,8,7,5,3,1,2];
-      var ds2 = [8,9,8,7,5,3,2,1,2,3,5,7,8,9,8];
-      var n = ds1.length;
-      var scX = d3.scaleLinear().domain([0,n]).range([50,540]);
-      var scY = d3.scaleLinear().domain([0,9]).range([250,50]);
-      var svg = d3.select("#stagger");
-      svg.selectAll("line").data(ds1).enter().append("line")
-        .attr("stroke", "red").attr("stroke-width", 20)
-        .attr("x1", (d,i)=>scX(i)).attr("y1", scY(0))
-        .attr("x2", (d,i)=>scX(i)).attr("y2", d=>scY(d));
-      svg.on("click", function() {{
-        [ds1, ds2] = [ds2, ds1];
-        svg.selectAll("line").data(ds1)
-          .transition().duration(1000).delay((d,i)=>200*i)
-          .attr("y2", d=>scY(d));
-      }});
-    }}
-
-    function makeLissajous() {{
-      var svg = d3.select("#lissajous");
-      var a = 1.9, b = 3.2;
-      var phi, omega = 2 * Math.PI / 10000;
-      var crrX = 150 + 100, crrY = 150;
-      var prvX = crrX, prvY = crrY;
-      var timer = d3.timer(function(t) {{
-        phi = omega * t;
-        crrX = 150 + 100 * Math.cos(a * phi);
-        crrY = 150 + 100 * Math.sin(b * phi);
-        svg.selectAll("line")
-          .each(function() {{ this.bogus_opacity *= 0.99; }})
-          .attr("stroke-opacity", function() {{ return this.bogus_opacity; }})
-          .filter(function() {{ return this.bogus_opacity < 0.05; }})
-          .remove();
-        svg.append("line")
-          .each(function() {{ this.bogus_opacity = 1.0; }})
-          .attr("x1", prvX).attr("y1", prvY)
-          .attr("x2", crrX).attr("y2", crrY)
-          .attr("stroke", "green").attr("stroke-width", 2);
-        prvX = crrX; prvY = crrY;
-        if (t > 120000) timer.stop();
-      }});
-    }}
-
-    function initDashboard() {
-      createStatsCards();
-      createBarChart();
-      createPieChart();
-      createLineChart();
-      coordsPixels("#coords");
-      makeBrush();
-      makeDragDrop();
-      makeStagger();
-      makeLissajous();
-    }
-
-    document.addEventListener('DOMContentLoaded', initDashboard);
-  </script>
 </body>
 </html>
